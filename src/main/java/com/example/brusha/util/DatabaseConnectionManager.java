@@ -20,7 +20,7 @@ public class DatabaseConnectionManager {
 
         Properties prop = new Properties();
         try{
-            FileInputStream propertyFile = new FileInputStream("");
+            FileInputStream propertyFile = new FileInputStream("src/main/resources/application.properties");
             prop.load(propertyFile);
             user = prop.getProperty("db.user");
             password = prop.getProperty("db.password");

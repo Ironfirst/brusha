@@ -8,6 +8,10 @@ public class DatabaseConnectionManager {
     private static String url;
     private static Connection conn;
 
-    public static Connection getDa
+    public static Connection getDatabaseConnection(){
+
+
+        return conn;
+    }
 
 }

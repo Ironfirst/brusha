@@ -1,16 +1,38 @@
 package com.example.brusha.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+
+@Entity
 public class Customer {
 
-    int customerID;
+    // primary key
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long customerId;
+
     String name;
     String email;
     int phone;
     String address;
     String cpr;
 
-    public Customer(int customerID, String name, String email, int phone, String address, String cpr) {
-        this.customerID = customerID;
+// relations attributter
+
+    // commercial_id skal evt ændres her eller i commercial model for at sikre samme id navn
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="commercial_id")
+
+    //her ignoreres parent property i child objekt med JsonBackReference for at undgå uendeligt loop
+    @JsonBackReference
+    private Commercial commercial;
+
+    // tom constructor til oprettelse af tomme objekter
+    public Customer(){}
+
+    public Customer( String name, String email, int phone, String address, String cpr) {
+
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -18,12 +40,12 @@ public class Customer {
         this.cpr = cpr;
     }
 
-    public int getCustomerID() {
-        return customerID;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getName() {
@@ -69,12 +91,13 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                "customerID=" + customerID +
+                "customerId=" + customerId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone=" + phone +
                 ", address='" + address + '\'' +
                 ", cpr='" + cpr + '\'' +
+                ", commercial=" + commercial +
                 '}';
     }
 }

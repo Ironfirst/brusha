@@ -11,7 +11,7 @@ public class Commercial {
     // primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long commercialId;
 
     // attributter til oprettelse af objekt med constructor. her er der så relationer med
     String commercial;
@@ -42,12 +42,12 @@ public class Commercial {
         this.commercial = commercial;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCommercialId() {
+        return commercialId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCommercialId(Long commercialId) {
+        this.commercialId = commercialId;
     }
 
     public Set<Product> getProducts() {

@@ -1,6 +1,8 @@
 package com.example.brusha.models;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -16,10 +18,13 @@ public class Commercial {
     // attributter til oprettelse af objekt med constructor. her er der så relationer med
     String commercial;
 
-
+    //json skal kun følge referencen den ene vej
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "commercial", orphanRemoval = false)
     private Set<Product> products;
 
+    //Json skal kun følge referencen den ene vej
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "commercial", orphanRemoval = false)
     private Set<Customer> customers;
 

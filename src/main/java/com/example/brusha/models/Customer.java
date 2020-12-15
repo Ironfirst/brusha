@@ -1,8 +1,10 @@
 package com.example.brusha.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Customer {
@@ -25,10 +27,22 @@ public class Customer {
     // commercial_id skal evt ændres her eller i commercial model for at sikre samme id navn
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="commercial_id")
-
     //her ignoreres parent property i child objekt med JsonBackReference for at undgå uendeligt loop
     @JsonBackReference
     private Commercial commercial;
+
+
+    // subscription relation
+    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false)
+    private Subscription subscription;
+
+    // --------// skal måske laves om til mange til mange relation da mange kunder har mange statestikker =?
+    // statistic
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistic", orphanRemoval = false)
+    private Set<Statistic> statistics;
+
 
     // tom constructor til oprettelse af tomme objekter
     public Customer(){}

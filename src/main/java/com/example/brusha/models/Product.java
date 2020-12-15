@@ -1,18 +1,36 @@
 package com.example.brusha.models;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import javax.persistence.*;
+import java.util.Date;
+@Entity
 public class Product {
 
-    int customerID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
     String name;
     String producer;
     double price;
     Date date;
     boolean active;
 
-    public Product(int customerID, String name, String producer, double price, Date date, boolean active) {
-        this.customerID = customerID;
+    // relation af attributer "primary / foreign key"
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "commercial_id")
+
+    //her ignoreres parent property i child objekt med JsonBackReference for at undgå uendeligt loop
+    @JsonBackReference
+    private Commercial commercial;
+
+    public Product(){}
+
+    public Product( String name, String producer, double price, Date date, boolean active) {
+
         this.name = name;
         this.producer = producer;
         this.price = price;
@@ -20,12 +38,20 @@ public class Product {
         this.active = active;
     }
 
-    public int getCustomerID() {
-        return customerID;
+    public Long getId() {
+        return id;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Commercial getCommercial() {
+        return commercial;
+    }
+
+    public void setCommercial(Commercial commercial) {
+        this.commercial = commercial;
     }
 
     public String getName() {
@@ -71,12 +97,13 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "customerID=" + customerID +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", producer='" + producer + '\'' +
                 ", price=" + price +
                 ", date=" + date +
                 ", active=" + active +
+                ", commercial=" + commercial +
                 '}';
     }
 }

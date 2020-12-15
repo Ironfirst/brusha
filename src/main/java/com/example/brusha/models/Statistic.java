@@ -1,43 +1,73 @@
 package com.example.brusha.models;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
+
+@Entity
 public class Statistic {
 
-    Customer customerID;
-    Subscription subscriptionID;
-    Product productID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     Date date;
 
-    public Statistic(Customer customerID, Subscription subscriptionID, Product productID, Date date) {
-        this.customerID = customerID;
-        this.subscriptionID = subscriptionID;
-        this.productID = productID;
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistic", orphanRemoval = false)
+    private Set<Product> products;
+
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistic", orphanRemoval = false)
+    private Set<Customer> customers;
+
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistic", orphanRemoval = false)
+    private Set<Subscription> subscriptions;
+
+    public Statistic(){}
+
+    public Statistic(Customer customerID, Subscription subscriptionID, Date date) {
         this.date = date;
+
+        this.subscriptions = subscriptions;
+        this.customers = customers;
+        this.products = products;
     }
 
-    public Customer getCustomerID() {
-        return customerID;
+    public Long getId() {
+        return id;
     }
 
-    public void setCustomerID(Customer customerID) {
-        this.customerID = customerID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Subscription getSubscriptionID() {
-        return subscriptionID;
+    public Set<Product> getProducts() {
+        return products;
     }
 
-    public void setSubscriptionID(Subscription subscriptionID) {
-        this.subscriptionID = subscriptionID;
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
-    public Product getProductID() {
-        return productID;
+    public Set<Customer> getCustomers() {
+        return customers;
     }
 
-    public void setProductID(Product productID) {
-        this.productID = productID;
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
+    }
+
+    public Set<Subscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(Set<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 
     public Date getDate() {
@@ -51,10 +81,11 @@ public class Statistic {
     @Override
     public String toString() {
         return "Statistic{" +
-                "customerID=" + customerID +
-                ", subscriptionID=" + subscriptionID +
-                ", productID=" + productID +
+                "id=" + id +
                 ", date=" + date +
+                ", products=" + products +
+                ", customers=" + customers +
+                ", subscriptions=" + subscriptions +
                 '}';
     }
 }

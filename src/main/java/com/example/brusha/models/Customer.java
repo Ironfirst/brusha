@@ -18,6 +18,8 @@ public class Customer {
     String address;
     String cpr;
 
+
+
 // relations attributter
 
     // commercial_id skal evt ændres her eller i commercial model for at sikre samme id navn

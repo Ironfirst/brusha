@@ -1,30 +1,50 @@
 package com.example.brusha.models;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 
+@Entity
 public class Subscription {
 
-    int subscriptionID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     Date startDate;
     Date endDate;
     Time time;
     boolean active;
 
-    public Subscription(int subscriptionID, Date startDate, Date endDate, Time time, boolean active) {
-        this.subscriptionID = subscriptionID;
+    @JsonManagedReference
+    @OneToOne ( cascade = CascadeType.ALL, orphanRemoval = false)
+    private Product product;
+
+    @JsonManagedReference
+    @OneToOne ( cascade = CascadeType.ALL, orphanRemoval = false)
+    private Customer customer;
+
+
+    public Subscription(){}
+
+    public Subscription( Date startDate, Date endDate, Time time, boolean active) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.time = time;
         this.active = active;
+        this.customer = customer;
+        this.product= product;
     }
 
-    public int getSubscriptionID() {
-        return subscriptionID;
+    public Long getId() {
+        return id;
     }
 
-    public void setSubscriptionID(int subscriptionID) {
-        this.subscriptionID = subscriptionID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getStartDate() {
@@ -62,7 +82,7 @@ public class Subscription {
     @Override
     public String toString() {
         return "Subscription{" +
-                "subscriptionID=" + subscriptionID +
+                "id=" + id +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", time=" + time +

@@ -1,9 +1,8 @@
 package com.example.brusha.repository;
 
-import java.sql.Connection;
+import com.example.brusha.models.Commercial;
 
-public class CommercialRepository {
+import org.springframework.data.repository.CrudRepository;
 
-    private Connection conn;
-
+public interface CommercialRepository extends CrudRepository<Commercial, Long> {
 }

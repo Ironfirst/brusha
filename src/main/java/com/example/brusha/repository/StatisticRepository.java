@@ -1,4 +1,8 @@
 package com.example.brusha.repository;
 
-public class StatisticRepository {
+import com.example.brusha.models.Statistic;
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface StatisticRepository extends CrudRepository<Statistic, Long> {
 }

@@ -1,15 +1,37 @@
 package com.example.brusha.models;
 
+
+import javax.persistence.*;
+import java.util.Set;
+
+// fortæller at her skal der checkes for en database klasse
+@Entity
 public class Commercial {
 
-    String commercial;
-    Customer customer;
-    Product product;
+    // primary key
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Commercial(String commercial, Customer customer, Product product) {
+    // attributter til oprettelse af objekt med constructor. her er der så relationer med
+    String commercial;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commercial", orphanRemoval = false)
+    private Set<Product> products;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commercial", orphanRemoval = false)
+    private Set<Customer> customers;
+
+
+    public Commercial(){}
+
+    public Commercial(String commercial,  Product product) {
+
         this.commercial = commercial;
-        this.customer = customer;
-        this.product = product;
+
+        this.products = products;
+        this.customers = customers;
     }
 
     public String getCommercial() {
@@ -20,28 +42,27 @@ public class Commercial {
         this.commercial = commercial;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Long getId() {
+        return id;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public Set<Product> getProducts() {
+        return products;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
-    @Override
-    public String toString() {
-        return "Commercial{" +
-                "commercial='" + commercial + '\'' +
-                ", customer=" + customer +
-                ", product=" + product +
-                '}';
+    public Set<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
     }
 }

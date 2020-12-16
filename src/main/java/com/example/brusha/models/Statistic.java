@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,24 +18,39 @@ public class Statistic {
     Date date;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistic", orphanRemoval = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistics", orphanRemoval = false)
     private Set<Product> products;
 
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistic", orphanRemoval = false)
-    private Set<Customer> customers;
+    // prøv at lave many to many relation på customer / commercial. husk ret på customer også
+// tester lige om dette virker istedet for en "many to one relation
+//@ManyToMany(cascade = CascadeType.ALL)
+////specificer join tabellen
+//@JoinTable ( name = "Statistic_customer",
+//        joinColumns = @JoinColumn(name = "statistic_id"),
+//        inverseJoinColumns = @JoinColumn(name = "customer_id")
+//)
+//private Set<Customer> customers = new HashSet<>();
 
+
+// ------- // many to one customer relation
+//    // many to one customer
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
+    //for at undgå uendeligt loop, ignoreres parent property i childbojekt med JsonBackReference
+    @JsonBackReference
+    private Customer customers;
+
+    // subscriptions
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistic", orphanRemoval = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistics", orphanRemoval = false)
     private Set<Subscription> subscriptions;
 
     public Statistic(){}
 
     public Statistic(Customer customerID, Subscription subscriptionID, Date date) {
-        this.date = date;
-
-        this.subscriptions = subscriptions;
         this.customers = customers;
+        this.date = date;
+        this.subscriptions = subscriptions;
         this.products = products;
     }
 
@@ -54,11 +70,11 @@ public class Statistic {
         this.products = products;
     }
 
-    public Set<Customer> getCustomers() {
+    public Customer getCustomers() {
         return customers;
     }
 
-    public void setCustomers(Set<Customer> customers) {
+    public void setCustomers(Customer customers) {
         this.customers = customers;
     }
 
@@ -78,14 +94,5 @@ public class Statistic {
         this.date = date;
     }
 
-    @Override
-    public String toString() {
-        return "Statistic{" +
-                "id=" + id +
-                ", date=" + date +
-                ", products=" + products +
-                ", customers=" + customers +
-                ", subscriptions=" + subscriptions +
-                '}';
-    }
+
 }

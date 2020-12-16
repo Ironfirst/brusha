@@ -1,6 +1,7 @@
 package com.example.brusha.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ public class Customer {
     // primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
+    private Long id;
 
     String name;
     String email;
@@ -29,18 +30,24 @@ public class Customer {
     @JoinColumn(name="commercial_id")
     //her ignoreres parent property i child objekt med JsonBackReference for at undgå uendeligt loop
     @JsonBackReference
-    private Commercial commercial;
+    private Commercial commercials;
 
 
     // subscription relation
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = false)
-    private Subscription subscription;
+    private Subscription subscriptions;
 
+//    @ManyToMany( mappedBy = "customers", cascade = CascadeType.ALL)
+//    //envejs referance i JSON for at undgå uendeligt loop - ignoreres
+//    @JsonIgnore
+//    Set<Statistic> statistics;
+
+    //////---------- tester med mange til mange istedet.
     // --------// skal måske laves om til mange til mange relation da mange kunder har mange statestikker =?
     // statistic
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statistic", orphanRemoval = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customers", orphanRemoval = false)
     private Set<Statistic> statistics;
 
 
@@ -54,14 +61,15 @@ public class Customer {
         this.phone = phone;
         this.address = address;
         this.cpr = cpr;
+        this.statistics = statistics;
     }
 
     public Long getCustomerId() {
-        return customerId;
+        return id;
     }
 
     public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+        this.id = customerId;
     }
 
     public String getName() {
@@ -104,16 +112,50 @@ public class Customer {
         this.cpr = cpr;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Commercial getCommercial() {
+        return commercials;
+    }
+
+    public void setCommercial(Commercial commercial) {
+        this.commercials = commercial;
+    }
+
+    public Subscription getSubscription() {
+        return subscriptions;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscriptions = subscription;
+    }
+
+    public Set<Statistic> getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(Set<Statistic> statistics) {
+        this.statistics = statistics;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
-                "customerId=" + customerId +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone=" + phone +
                 ", address='" + address + '\'' +
                 ", cpr='" + cpr + '\'' +
-                ", commercial=" + commercial +
+                ", commercial=" + commercials +
+                ", subscription=" + subscriptions +
+                ", statistics=" + statistics +
                 '}';
     }
 }

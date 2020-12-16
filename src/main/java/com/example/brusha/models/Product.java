@@ -20,12 +20,20 @@ public class Product {
 
     // relation af attributer "primary / foreign key"
 
+    //many to one relation til statistic //--- skal måske være en mange til mange istedet da mange produkter kan have mana statestikker
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistic_id")
+
+    @JsonBackReference
+    private Statistic statistics;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commercial_id")
 
     //her ignoreres parent property i child objekt med JsonBackReference for at undgå uendeligt loop
     @JsonBackReference
-    private Commercial commercial;
+    private Commercial commercials;
 
     public Product(){}
 
@@ -36,6 +44,7 @@ public class Product {
         this.price = price;
         this.date = date;
         this.active = active;
+        this.commercials = commercials;
     }
 
     public Long getId() {
@@ -47,11 +56,11 @@ public class Product {
     }
 
     public Commercial getCommercial() {
-        return commercial;
+        return commercials;
     }
 
     public void setCommercial(Commercial commercial) {
-        this.commercial = commercial;
+        this.commercials = commercial;
     }
 
     public String getName() {
@@ -94,6 +103,22 @@ public class Product {
         this.active = active;
     }
 
+    public Commercial getCommercials() {
+        return commercials;
+    }
+
+    public void setCommercials(Commercial commercials) {
+        this.commercials = commercials;
+    }
+
+    public Statistic getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(Statistic statistics) {
+        this.statistics = statistics;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -103,7 +128,7 @@ public class Product {
                 ", price=" + price +
                 ", date=" + date +
                 ", active=" + active +
-                ", commercial=" + commercial +
+                ", commercial=" + commercials +
                 '}';
     }
 }

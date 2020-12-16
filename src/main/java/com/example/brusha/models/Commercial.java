@@ -20,12 +20,12 @@ public class Commercial {
 
     //json skal kun følge referencen den ene vej
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commercial", orphanRemoval = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commercials", orphanRemoval = false)
     private Set<Product> products;
 
     //Json skal kun følge referencen den ene vej
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commercial", orphanRemoval = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "commercials", orphanRemoval = false)
     private Set<Customer> customers;
 
 

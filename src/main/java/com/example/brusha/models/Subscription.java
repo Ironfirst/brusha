@@ -1,6 +1,7 @@
 package com.example.brusha.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -26,6 +27,12 @@ public class Subscription {
     @JsonManagedReference
     @OneToOne ( cascade = CascadeType.ALL, orphanRemoval = false)
     private Customer customer;
+
+    // mangler many to one relation til statistic
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistic_id")
+    @JsonBackReference
+    private Statistic statistics;
 
 
     public Subscription(){}
@@ -77,6 +84,30 @@ public class Subscription {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Statistic getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(Statistic statistics) {
+        this.statistics = statistics;
     }
 
     @Override

@@ -23,9 +23,10 @@ public class Product {
     //many to one relation til statistic //--- skal måske være en mange til mange istedet da mange produkter kan have mana statestikker
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "statistic_id")
-
     @JsonBackReference
     private Statistic statistics;
+
+    // mangler one to many relation til subscription ------------ !!!!!!!!!!!!!!!!!!!
 
 
     @ManyToOne(fetch = FetchType.LAZY)

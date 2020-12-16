@@ -20,6 +20,7 @@ public class Subscription {
     Time time;
     boolean active;
 
+    // denne relation skal laves om til one to many " da et product kan have mange subscritions
     @JsonManagedReference
     @OneToOne ( cascade = CascadeType.ALL, orphanRemoval = false)
     private Product product;
@@ -28,7 +29,10 @@ public class Subscription {
     @OneToOne ( cascade = CascadeType.ALL, orphanRemoval = false)
     private Customer customer;
 
-    // mangler many to one relation til statistic
+    // mangler many to many relation til commercial " da mange commercials kan have mange subscriptions
+
+    // skal måske være many to many relation. mange statistics kan have mange subscriptions
+    //one to many relation til statistic
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "statistic_id")
     @JsonBackReference

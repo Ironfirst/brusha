@@ -18,6 +18,8 @@ public class Commercial {
     // attributter til oprettelse af objekt med constructor. her er der så relationer med
     String commercial;
 
+    // mangler mange til mange relation til subscriptions " mange subscriptions kan have mange commercial
+
     //json skal kun følge referencen den ene vej
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "commercials", orphanRemoval = false)
